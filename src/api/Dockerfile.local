@@ -1,0 +1,37 @@
+# Use an official lightweight Python image.
+FROM python:3.11-slim
+
+# Install the Azure CLI in the container so that it can be used to authenticate
+# using Azure Identity DefaultAzureCredential
+RUN apt-get update \
+&& apt-get install -y apt-transport-https ca-certificates curl gnupg lsb-release \
+&& mkdir -p /etc/apt/keyrings \
+&& curl -sLS https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor | tee /etc/apt/keyrings/microsoft.gpg > /dev/null \
+&& chmod go+r /etc/apt/keyrings/microsoft.gpg \
+&& AZ_DIST=$(lsb_release -cs) \
+&& echo "Types: deb" > /etc/apt/sources.list.d/azure-cli.sources \
+&& echo "URIs: https://packages.microsoft.com/repos/azure-cli/" >> /etc/apt/sources.list.d/azure-cli.sources \
+&& echo "Suites: ${AZ_DIST}" >> /etc/apt/sources.list.d/azure-cli.sources \
+&& echo "Components: main" >> /etc/apt/sources.list.d/azure-cli.sources \
+&& echo "Architectures: $(dpkg --print-architecture)" >> /etc/apt/sources.list.d/azure-cli.sources \
+&& echo "Signed-by: /etc/apt/keyrings/microsoft.gpg" >> /etc/apt/sources.list.d/azure-cli.sources \
+&& apt-get update \
+&& apt-get install -y azure-cli
+
+# Set the working directory in the container
+WORKDIR /code
+
+# Copy just the requirements.txt file initially
+COPY requirements.txt ./
+
+# Install any needed packages specified in requirements.txt, including those in the WHL directory
+RUN pip3 install --no-cache-dir -r requirements.txt --find-links ./whl
+
+# Copy the rest of your application's source code
+COPY . .
+
+# Make port 5000 available to the world outside this container
+EXPOSE 5000
+
+# Define the command to run your app using gunicorn
+ENTRYPOINT ["gunicorn", "-c", "gunicorn.conf.py", "api.app:app"]

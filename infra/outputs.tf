@@ -43,18 +43,6 @@ output "AZURE_OPENAI_NAME" {
   value = azurerm_cognitive_account.cog.name
 }
 
-output "AZURE_AKS_CLUSTER_NAME" {
-  value = local.is_default_workspace ? "" : azurerm_kubernetes_cluster.aks[0].name
-}
-
-output "AZURE_AKS_IDENTITY_CLIENT_ID" {
-  value = local.is_default_workspace ? "" : azurerm_user_assigned_identity.uai.client_id
-}
-
-output "AZURE_AKS_NAMESPACE" {
-  value = local.is_default_workspace ? "" : var.k8s_namespace
-}
-
 output "AZURE_CONTAINER_REGISTRY_ENDPOINT" {
   value = local.is_default_workspace ? "" : azurerm_container_registry.acr[0].login_server
 }
@@ -97,6 +85,15 @@ output "BING_SEARCH_KEY" {
 }
 
 output "APPLICATIONINSIGHTS_CONNECTION_STRING" {
-  value     = local.deploy_observability_tools ? azurerm_application_insights.applicationinsights[0].connection_string : "" 
+  value     = local.deploy_observability_tools ? azurerm_application_insights.applicationinsights[0].connection_string : ""
   sensitive = true
 }
+
+# output "AZURE_CLIENT_ID" {
+#   value = azuread_application_registration.docker_compose_user.client_id
+# }
+
+# output "AZURE_CLIENT_SECRET" {
+#   value = azuread_application_password.docker_compose_user.value
+#   sensitive = true
+# }

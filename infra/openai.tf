@@ -13,6 +13,7 @@ resource "azurerm_cognitive_account" "cog" {
   sku_name              = "S0"
   custom_subdomain_name = azurecaf_name.cog_name.result
   tags                  = azurerm_resource_group.rg.tags
+  local_auth_enabled    = false
 }
 
 resource "azurerm_cognitive_deployment" "deployment" {

@@ -34,7 +34,7 @@ variable "openai_model_version" {
 variable "openai_model_capacity" {
   description = "value of azure openai model capacity"
   type        = number
-  default     = 30
+  default     = 8
 }
 
 variable "openai_35_turbo_model_name" {
@@ -78,7 +78,7 @@ variable "openai_35_turbo_model_version" {
 variable "openai_35_turbo_model_capacity" {
   description = "value of azure openai model capacity"
   type        = number
-  default     = 30
+  default     = 8
 }
 
 variable "openai_embedding_model_name" {

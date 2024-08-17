@@ -6,12 +6,10 @@ resource "azurecaf_name" "search_name" {
 }
 
 resource "azurerm_search_service" "search" {
-  name                = azurecaf_name.search_name.result
-  resource_group_name = azurerm_resource_group.rg.name
-  location            = var.location
-  sku                 = "basic"
-
-  local_authentication_enabled = true
-  authentication_failure_mode  = "http403"
+  name                         = azurecaf_name.search_name.result
+  resource_group_name          = azurerm_resource_group.rg.name
+  location                     = var.location
+  sku                          = "basic"
+  local_authentication_enabled = false
   semantic_search_sku          = "free"
 }

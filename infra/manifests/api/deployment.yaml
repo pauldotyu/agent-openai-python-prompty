@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: api
+  template:
+    metadata:
+      labels:
+        app: api
+    spec:
+      containers:
+        - name: api
+          image: creativeagent/api:latest
+          ports:
+            - containerPort: 5000
+          envFrom:
+            - configMapRef:
+                name: creativeagent-config
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "1000m" 
+            limits:
+              memory: "1024Mi"
+              cpu: "2000m" 
