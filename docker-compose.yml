@@ -2,12 +2,15 @@ services:
   api:
     build:
       context: src/api
+      dockerfile: Dockerfile.local
     ports:
       - "5000:5000"
     env_file: 
       - .env
     environment:
       - PYTHONUNBUFFERED=1
+    volumes:
+      - $HOME/.azure/:/root/.azure
   web:
     build:
       context: src/web
