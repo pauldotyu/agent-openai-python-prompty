@@ -14,51 +14,6 @@ resource "azurerm_log_analytics_workspace" "example" {
   retention_in_days   = 30
 }
 
-resource "azurerm_monitor_data_collection_rule" "example_msci" {
-  count               = local.deploy_observability_tools ? 1 : 0
-  name                = "msci-${azurerm_resource_group.rg.location}-${azurerm_kubernetes_cluster.aks[0].name}"
-  resource_group_name = azurerm_resource_group.rg.name
-  location            = azurerm_resource_group.rg.location
-  kind                = "Linux"
-
-  data_sources {
-    extension {
-      name           = "ContainerInsightsExtension"
-      extension_name = "ContainerInsights"
-      streams        = ["Microsoft-ContainerInsights-Group-Default"]
-      extension_json = <<JSON
-      {
-        "dataCollectionSettings": {
-          "interval": "1m",
-          "namespaceFilteringMode": "Off",
-          "enableContainerLogV2": true
-        }
-      }
-      JSON
-    }
-  }
-
-  destinations {
-    log_analytics {
-      workspace_resource_id = azurerm_log_analytics_workspace.example[0].id
-      name                  = azurerm_log_analytics_workspace.example[0].name
-    }
-  }
-
-  data_flow {
-    streams      = ["Microsoft-ContainerInsights-Group-Default"]
-    destinations = [azurerm_log_analytics_workspace.example[0].name]
-  }
-}
-
-resource "azurerm_monitor_data_collection_rule_association" "example_msci_to_aks" {
-  count                   = local.deploy_observability_tools ? 1 : 0
-  name                    = "msci-${azurerm_kubernetes_cluster.aks[0].name}"
-  target_resource_id      = azurerm_kubernetes_cluster.aks[0].id
-  data_collection_rule_id = azurerm_monitor_data_collection_rule.example_msci[0].id
-}
-
-
 resource "azurerm_application_insights" "applicationinsights" {
   count               = local.deploy_observability_tools ? 1 : 0
   name                = "ai-${local.resource_token}"
@@ -67,4 +22,34 @@ resource "azurerm_application_insights" "applicationinsights" {
   application_type    = "web"
   workspace_id        = azurerm_log_analytics_workspace.example[0].id
   tags                = local.tags
+}
+
+resource "azurerm_dashboard_grafana" "example" {
+  count                 = local.deploy_observability_tools ? 1 : 0
+  resource_group_name   = azurerm_resource_group.rg.name
+  location              = azurerm_resource_group.rg.location
+  name                  = "graf-${local.resource_token}"
+  grafana_major_version = 10
+
+  identity {
+    type = "SystemAssigned"
+  }
+
+  azure_monitor_workspace_integrations {
+    resource_id = azurerm_monitor_workspace.example[0].id
+  }
+}
+
+resource "azurerm_role_assignment" "grafana1" {
+  count                = local.deploy_observability_tools ? 1 : 0
+  scope                = azurerm_dashboard_grafana.example[0].id
+  principal_id         = data.azurerm_client_config.current.object_id
+  role_definition_name = "Grafana Admin"
+}
+
+resource "azurerm_role_assignment" "grafana2" {
+  count                = local.deploy_observability_tools ? 1 : 0
+  scope                = azurerm_resource_group.rg.id
+  principal_id         = azurerm_dashboard_grafana.example[0].identity[0].principal_id
+  role_definition_name = "Monitoring Data Reader"
 }

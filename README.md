@@ -191,14 +191,14 @@ To test the sample:
     ```
     Run the Flask webserver
     ```
-    flask --debug --app api.app:app run --port 8080
+    flask --debug --app api.app:app run --port 5000
     ```
 
     If you open the server link in a browser, you will see a URL not found error, this is because we haven't created a home url route in flask. We have instead created a `/get_article` route which is used to pass context and instructions directly to the get_article.py file which runs the agent workflow.
 
    We have created a web interface which we will run next, but you can test the API is working as expected by running this in the browser:
     ```
-    http://127.0.0.1:8080/get_article?context=Write an article about camping in alaska&instructions=find specifics about what type of gear they would need and explain in detail
+    http://127.0.0.1:5000/get_article?context=Write an article about camping in alaska&instructions=find specifics about what type of gear they would need and explain in detail
     ```
 
 2. Once the flask server is running you can now run the web app. To do this open a new terminal window and navigate to the web folder using this command:

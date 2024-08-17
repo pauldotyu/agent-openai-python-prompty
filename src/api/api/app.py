@@ -14,4 +14,4 @@ app.register_blueprint(get_article.bp)
 init_logging(sampling_rate=1.0)
 
 if __name__ == '__main__':
-    app.run(debug=True, port=8080)
+    app.run(debug=True, port=5000)

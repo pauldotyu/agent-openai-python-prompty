@@ -1,5 +1,6 @@
 variable "location" {
-  type = string
+  type    = string
+  default = "eastus2"
 }
 
 variable "environment_name" {
@@ -34,7 +35,7 @@ variable "openai_model_version" {
 variable "openai_model_capacity" {
   description = "value of azure openai model capacity"
   type        = number
-  default     = 30
+  default     = 8
 }
 
 variable "openai_35_turbo_model_name" {
@@ -42,32 +43,6 @@ variable "openai_35_turbo_model_name" {
   type        = string
   default     = "gpt-35-turbo"
 }
-
-variable "openai_4_eval_deployment_name" {
-  description = "value of azure openai model name"
-  type        = string
-  default     = "gpt-4-eval"
-}
-
-variable "openai_4_eval_model_name" {
-  description = "value of azure openai model name"
-  type        = string
-  default     = "gpt-4"
-}
-
-
-variable "openai_4_eval_model_version" {
-  description = "value of azure openai model name"
-  type        = string
-  default     = "0613"
-}
-
-variable "openai_4_eval_model_capacity" {
-  description = "value of azure openai model capacity"
-  type        = number
-  default     = 20
-}
-
 
 variable "openai_35_turbo_model_version" {
   description = "value of azure openai model version"
@@ -78,7 +53,31 @@ variable "openai_35_turbo_model_version" {
 variable "openai_35_turbo_model_capacity" {
   description = "value of azure openai model capacity"
   type        = number
-  default     = 30
+  default     = 8
+}
+
+variable "openai_4_eval_model_name" {
+  description = "value of azure openai model name"
+  type        = string
+  default     = "gpt-4o"
+}
+
+variable "openai_4_eval_model_version" {
+  description = "value of azure openai model name"
+  type        = string
+  default     = "2024-05-13"
+}
+
+variable "openai_4_eval_model_capacity" {
+  description = "value of azure openai model capacity"
+  type        = number
+  default     = 8
+}
+
+variable "openai_4_eval_deployment_name" {
+  description = "value of azure openai model name"
+  type        = string
+  default     = "gpt-4-eval"
 }
 
 variable "openai_embedding_model_name" {
@@ -99,12 +98,12 @@ variable "openai_embedding_model_capacity" {
   default     = 30
 }
 
-
 variable "openai_api_version" {
   description = "value of azure openai api version"
   type        = string
   default     = "2023-12-01-preview"
 }
+
 variable "search_index_name" {
   description = "value of search index name"
   type        = string
