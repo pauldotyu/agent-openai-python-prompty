@@ -3,59 +3,59 @@
 name: creativeagent
 metadata:
   template: creativeagent@0.0.1-beta
-services:
-  api:
-    project: ./src/api
-    language: python
-    host: aks
-    k8s:
-      deploymentPath: ../../infra/manifests/api
-      ingress:
-        relativePath: api
-    hooks:
-      postdeploy:
-        windows:
-          shell: pwsh
-          run: azd env set REACT_APP_API_BASE_URL $env:SERVICE_API_ENDPOINT_URL
-        posix:
-          shell: sh
-          run: azd env set REACT_APP_API_BASE_URL ${SERVICE_API_ENDPOINT_URL}
-  web:
-    project: ./src/web
-    dist: dist
-    language: js
-    host: aks
-    k8s:
-      deploymentPath: ../../infra/manifests/web
-    hooks:
-      postdeploy:
-        windows:
-          shell: pwsh
-          run: azd env set REACT_APP_WEB_BASE_URL $env:SERVICE_WEB_ENDPOINT_URL
-        posix:
-          shell: sh
-          run: azd env set REACT_APP_WEB_BASE_URL ${SERVICE_WEB_ENDPOINT_URL}
+# services:
+#   api:
+#     project: ./src/api
+#     language: python
+#     host: aks
+#     k8s:
+#       deploymentPath: ../../infra/manifests/api
+#       ingress:
+#         relativePath: api
+#     hooks:
+#       postdeploy:
+#         windows:
+#           shell: pwsh
+#           run: azd env set REACT_APP_API_BASE_URL $env:SERVICE_API_ENDPOINT_URL
+#         posix:
+#           shell: sh
+#           run: azd env set REACT_APP_API_BASE_URL ${SERVICE_API_ENDPOINT_URL}
+#   web:
+#     project: ./src/web
+#     dist: dist
+#     language: js
+#     host: aks
+#     k8s:
+#       deploymentPath: ../../infra/manifests/web
+#     hooks:
+#       postdeploy:
+#         windows:
+#           shell: pwsh
+#           run: azd env set REACT_APP_WEB_BASE_URL $env:SERVICE_WEB_ENDPOINT_URL
+#         posix:
+#           shell: sh
+#           run: azd env set REACT_APP_WEB_BASE_URL ${SERVICE_WEB_ENDPOINT_URL}
 hooks:
-  preprovision:
-    shell: sh
-    continueOnError: false
-    interactive: true
-    run: infra/hooks/preprovision.sh
+  # preprovision:
+  #   shell: sh
+  #   continueOnError: false
+  #   interactive: true
+  #   run: infra/hooks/preprovision.sh
   postprovision:
     shell: sh
     continueOnError: false
     interactive: true
     run: infra/hooks/postprovision.sh
-  postdeploy:
-    shell: sh
-    continueOnError: false
-    interactive: true
-    run: infra/hooks/postdeploy.sh
-  predown:
-    shell: sh
-    continueOnError: false
-    interactive: true
-    run: infra/hooks/predown.sh
+  # postdeploy:
+  #   shell: sh
+  #   continueOnError: false
+  #   interactive: true
+  #   run: infra/hooks/postdeploy.sh
+  # predown:
+  #   shell: sh
+  #   continueOnError: false
+  #   interactive: true
+  #   run: infra/hooks/predown.sh
 infra:
   provider: terraform
 pipeline:

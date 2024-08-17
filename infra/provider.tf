@@ -1,40 +1,50 @@
 terraform {
-  backend "azurerm" {}
+  backend "local" {}
   required_version = ">= 1.1.7, < 2.0.0"
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "=3.80.0"
+      version = "=3.116.0"
+    }
+
+    azuread = {
+      source  = "hashicorp/azuread"
+      version = "= 2.53.1"
     }
 
     azapi = {
       source  = "Azure/azapi"
-      version = ">= 1.12.1"
+      version = "= 1.15.0"
     }
 
     azurecaf = {
       source  = "aztfmod/azurecaf"
-      version = "~>1.2.24"
+      version = "=1.2.28"
     }
 
     kubernetes = {
       source  = "hashicorp/kubernetes"
-      version = ">= 2.0.3"
+      version = "= 2.32.0"
     }
 
     helm = {
       source  = "hashicorp/helm"
-      version = ">= 2.1.0"
+      version = "= 2.15.0"
     }
 
     local = {
       source  = "hashicorp/local"
-      version = "=2.4.0"
+      version = "=2.5.1"
     }
 
     random = {
       source  = "hashicorp/random"
-      version = "=3.5.1"
+      version = "=3.6.2"
+    }
+
+    time = {
+      source  = "hashicorp/time"
+      version = "=0.12.0"
     }
   }
 }
@@ -42,7 +52,7 @@ terraform {
 provider "azurerm" {
   features {
     key_vault {
-      purge_soft_delete_on_destroy = false
+      purge_soft_delete_on_destroy = true
     }
     resource_group {
       prevent_deletion_if_contains_resources = false
@@ -51,6 +61,10 @@ provider "azurerm" {
       purge_soft_delete_on_destroy = true
     }
   }
+}
+
+provider "azapi" {
+  use_msi = false
 }
 
 provider "kubernetes" {

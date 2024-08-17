@@ -1,3 +1,11 @@
+output "RESOURCE_SUFFIX" {
+  value = local.resource_token
+}
+
+output "AZURE_DNS_ZONE" {
+  value = azurerm_dns_zone.dns.name
+}
+
 output "AZURE_OPENAI_ENDPOINT" {
   value = azurerm_cognitive_account.cog.endpoint
 }
@@ -43,18 +51,6 @@ output "AZURE_OPENAI_NAME" {
   value = azurerm_cognitive_account.cog.name
 }
 
-output "AZURE_AKS_CLUSTER_NAME" {
-  value = local.is_default_workspace ? "" : azurerm_kubernetes_cluster.aks[0].name
-}
-
-output "AZURE_AKS_IDENTITY_CLIENT_ID" {
-  value = local.is_default_workspace ? "" : azurerm_user_assigned_identity.uai.client_id
-}
-
-output "AZURE_AKS_NAMESPACE" {
-  value = local.is_default_workspace ? "" : var.k8s_namespace
-}
-
 output "AZURE_CONTAINER_REGISTRY_ENDPOINT" {
   value = local.is_default_workspace ? "" : azurerm_container_registry.acr[0].login_server
 }
@@ -97,6 +93,6 @@ output "BING_SEARCH_KEY" {
 }
 
 output "APPLICATIONINSIGHTS_CONNECTION_STRING" {
-  value     = local.deploy_observability_tools ? azurerm_application_insights.applicationinsights[0].connection_string : "" 
+  value     = local.deploy_observability_tools ? azurerm_application_insights.applicationinsights[0].connection_string : ""
   sensitive = true
 }

@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: web
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: web
@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: web
-          image: {{.Env.SERVICE_WEB_IMAGE_NAME}}
+          image: web:latest
           ports:
             - containerPort: 80
           env:
@@ -23,8 +23,8 @@ spec:
             - name: REACT_APP_APPLICATIONINSIGHTS_CONNECTION_STRING
               valueFrom:
                 configMapKeyRef:
-                  name: web-config
-                  key: REACT_APP_APPLICATIONINSIGHTS_CONNECTION_STRING
+                  name: ccw-config
+                  key: APPLICATIONINSIGHTS_CONNECTION_STRING
                   optional: false
           resources:
             requests:
@@ -33,3 +33,14 @@ spec:
             limits:
               memory: "512Mi"
               cpu: "2000m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: web
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+  selector:
+    app: web
