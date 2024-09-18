@@ -35,6 +35,7 @@ name: ccw-api
 on:
   push:
     branches: [learnlive/ep1]
+    paths: ['src/api/**']
   workflow_dispatch:
 
 env:
