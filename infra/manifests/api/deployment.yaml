@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: api
-          image: api:latest
+          image: crzwm4mzm5mge0n.azurecr.io/api:latest
           ports:
             - containerPort: 5000
           envFrom:
